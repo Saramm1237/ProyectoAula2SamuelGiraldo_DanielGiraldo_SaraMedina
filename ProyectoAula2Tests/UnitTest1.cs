@@ -11,14 +11,11 @@ namespace ProyectoAula2Test
         [TestMethod]
         public void TestAgregarIdeaDeNegocio()
         {
-            // Arrange
             List<IdeaDeNegocio> ideas = new List<IdeaDeNegocio>();
 
-            // Act
             IdeaDeNegocio idea = Program.IngresarIdeaDeNegocio();
             ideas.Add(idea);
 
-            // Assert
             Assert.AreEqual(1, ideas.Count);
         }
 
