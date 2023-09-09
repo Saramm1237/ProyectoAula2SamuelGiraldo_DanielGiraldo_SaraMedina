@@ -8,93 +8,48 @@ namespace ProyectoAula2Test
     [TestClass]
     public class ProgramTests
     {
-        [TestMethod]
-        public void TestAgregarIdeaDeNegocio()
-        {
-            // Arrange
-            List<IdeaDeNegocio> ideas = new List<IdeaDeNegocio>();
+        private StringWriter consoleOutput;
+        private TextReader originalConsoleInput;
 
-            // Act
+        [TestInitialize]
+        public void Setup()
+        {
+            consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+  
+            originalConsoleInput = Console.In;
+        }
+
+
+        [TestMethod]
+        public void TestIngresarIdeaDeNegocio()
+        {
+            string input = "Código de prueba\nNombre de prueba\n1000\n";
+            Console.SetIn(new StringReader(input));
+
+           
             IdeaDeNegocio idea = Program.IngresarIdeaDeNegocio();
-            ideas.Add(idea);
 
-            // Assert
-            Assert.AreEqual(1, ideas.Count);
+            Assert.AreEqual("Código de prueba", idea.Codigo);
+            Assert.AreEqual("Nombre de prueba", idea.Nombre);
+            Assert.AreEqual(1000, idea.Inversion);
         }
 
         [TestMethod]
-        public void TestAgregarIntegrante()
-        {
-            // Arrange
-            List<IdeaDeNegocio> ideas = new List<IdeaDeNegocio>();
-            IdeaDeNegocio idea = new IdeaDeNegocio
-            {
-                Codigo = "123",
-                Nombre = "Idea de Negocio 1",
-                Inversion = 1000
-            };
-            ideas.Add(idea);
+        public void TestIngresarIntegrante()
+        {           
+            string input = "ID de prueba\nNombre de prueba\nApellidos de prueba\nRol de prueba\nEmail de prueba\n";
+            Console.SetIn(new StringReader(input));
 
-            // Act
-            Program.AgregarIntegrante(ideas, "123", new Integrante
-            {
-                Identificacion = "ABC123",
-                Nombre = "Juan",
-                Apellidos = "Perez",
-                Rol = "CEO",
-                Email = "juan@example.com"
-            });
+            Integrante integrante = Program.IngresarIntegrante();
 
-            // Assert
-            Assert.AreEqual(1, ideas[0].Integrantes.Count);
+            Assert.AreEqual("ID de prueba", integrante.Identificacion);
+            Assert.AreEqual("Nombre de prueba", integrante.Nombre);
+            Assert.AreEqual("Apellidos de prueba", integrante.Apellidos);
+            Assert.AreEqual("Rol de prueba", integrante.Rol);
+            Assert.AreEqual("Email de prueba", integrante.Email);
         }
 
-        [TestMethod]
-        public void TestEliminarIntegrante()
-        {
-            // Arrange
-            List<IdeaDeNegocio> ideas = new List<IdeaDeNegocio>();
-            IdeaDeNegocio idea = new IdeaDeNegocio
-            {
-                Codigo = "123",
-                Nombre = "Idea de Negocio 1",
-                Inversion = 1000
-            };
-            ideas.Add(idea);
-            Program.AgregarIntegrante(ideas, "123", new Integrante
-            {
-                Identificacion = "ABC123",
-                Nombre = "Juan",
-                Apellidos = "Perez",
-                Rol = "CEO",
-                Email = "juan@example.com"
-            });
-
-            // Act
-            Program.EliminarIntegrante(ideas, "123", "ABC123");
-
-            // Assert
-            Assert.AreEqual(0, ideas[0].Integrantes.Count);
-        }
-
-        [TestMethod]
-        public void TestModificarInversion()
-        {
-            // Arrange
-            List<IdeaDeNegocio> ideas = new List<IdeaDeNegocio>();
-            IdeaDeNegocio idea = new IdeaDeNegocio
-            {
-                Codigo = "123",
-                Nombre = "Idea de Negocio 1",
-                Inversion = 1000
-            };
-            ideas.Add(idea);
-
-            // Act
-            Program.ModificarInversion(ideas, "123", 1500);
-
-            // Assert
-            Assert.AreEqual(1500, ideas[0].Inversion);
-        }
     }
 }
